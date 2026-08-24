@@ -1,0 +1,41 @@
+name: Set launch Green Stupa retail prices
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update public prices
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          replacements={
+            "prices:[5000,2700,2500]":"price:69000",
+            "prices:[5000,4800,4500]":"price:79000",
+            "prices:[2500,2300,2100]":"price:89000",
+          }
+          for a,b in replacements.items(): s=s.replace(a,b)
+          s=s.replace("<div class=\"from\">${fmt(t.prices[0])} / мод</div>","<div class=\"from\">${fmt(t.price)}</div>")
+          s=s.replace("<div class=\"note\">Эхний сонголт · ${i===0?'Түргэн ургалттай':'Ойн төслийн сонголт'}</div>","<div class=\"note\">Мод + тарилт + 2 жилийн арчилгаа + хамгаалалт + бүртгэл</div>")
+          s=s.replace("<div class=\"total\"><span>Модны нийт үнэ</span><strong id=\"total\">—</strong></div>","<div class=\"total\"><span>Нийт үнэ</span><strong id=\"total\">—</strong></div>")
+          s=s.replace("Энэ дүн нь зөвхөн модны нийлүүлэгчийн үнэ. Тарилт, тээвэр, арчилгаа болон Ногоон Суваргын үйлчилгээний ашгийг тусад нь тооцож эцсийн үнийг гаргана.","Эцсийн үнэ нь мод, тээвэр, тарилт, 2 жилийн арчилгаа, хамгаалалт, бүртгэл болон Ногоон Суваргын үйл ажиллагааны зардал, ашгийг багтаана.")
+          s=s.replace("const tier=q=>q>=1000?2:q>=100?1:0;","const tier=q=>0;")
+          s=s.replace("const t=trees[selected],q=Math.max(1,+qty.value||1),price=t.prices[tier(q)],sum=price*q;","const t=trees[selected],q=Math.max(1,+qty.value||1),price=t.price,sum=price*q;")
+          s=s.replace("const f=new FormData(form),q=Math.max(1,+f.get('qty')||1),t=trees[+f.get('tree')||0],price=t.prices[tier(q)],sum=price*q,id=", "const f=new FormData(form),q=Math.max(1,+f.get('qty')||1),t=trees[+f.get('tree')||0],price=t.price,sum=price*q,id=")
+          s=s.replace("Модны нийлүүлэгчийн үнэ: ${fmt(sum)}", "Нийт үнэ: ${fmt(sum)}")
+          s=s.replace("Модны нийлүүлэгчийн нийт үнэ: ${fmt(sum)}. Тарилт + арчилгааны эцсийн үнийг тусад нь баталгаажуулна.","Нийт үнэ: ${fmt(sum)}. Мод, тарилт, 2 жилийн арчилгаа, хамгаалалт, бүртгэл багтсан.")
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit price update
+        run: |
+          git config user.name "Nogoon Suvarga Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Update Green Stupa retail prices"
+          git push
