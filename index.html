@@ -1,50 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="mn">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ногоон Суварга</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body{font-family:Arial,sans-serif;margin:0;background:#f5f7f5;color:#1f2933}
-    header{background:#1b5e20;color:#fff;padding:40px 20px;text-align:center}
-    section{padding:40px 20px;max-width:900px;margin:auto}
-    .card{background:#fff;padding:20px;border-radius:10px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-    footer{text-align:center;padding:20px;color:#666;font-size:14px}
-    a.button{display:inline-block;background:#1b5e20;color:#fff;text-decoration:none;padding:12px 16px;border-radius:8px}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nogoon Suvarga — Амьд дурсгал | Green Stupa</title>
+  <meta name="description" content="Nogoon Suvarga creates verified living memorials in Mongolia. Build a Green Suvarga in memory of someone you love.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Ногоон Суварга</h1>
-    <p>Green Stupa · Bright Future</p>
-  </header>
+<header class="site-header">
+  <a class="brand" href="#top"><span class="brand-mark">🌱</span><span><strong>NOGOON SUVARGA</strong><small data-mn="Амьд дурсгал" data-en="Living Memorials">Амьд дурсгал</small></span></a>
+  <nav>
+    <a href="#meaning" data-mn="Утга учир" data-en="Meaning">Утга учир</a>
+    <a href="#how" data-mn="Хэрхэн ажилладаг вэ" data-en="How it works">Хэрхэн ажилладаг вэ</a>
+    <a href="#impact" data-mn="Нөлөө" data-en="Impact">Нөлөө</a>
+    <a class="lang" id="langBtn">EN</a>
+    <a class="button button-small" href="#order" data-mn="Ногоон суварга бүтээх" data-en="Build a Green Suvarga">Ногоон суварга бүтээх</a>
+  </nav>
+</header>
 
-  <section>
-    <div class="card">
-      <h2>🌱 Бидний зорилго</h2>
-      <p>
-        Бид хүмүүсийг нас барсан хүний дурсгалд чулуугаар суварга босгохын оронд
-        мод тарьж “ногоон суварга” бүтээхийг уриалж байна.
-      </p>
+<main id="top">
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow" data-mn="МОНГОЛЫН ӨВ • АМЬД ДУРСГАЛ" data-en="MONGOLIAN HERITAGE • LIVING MEMORIAL">МОНГОЛЫН ӨВ • АМЬД ДУРСГАЛ</p>
+    <h1 data-mn="Чулуугаар бус,<br><em>амьдралаар</em> дурсъя." data-en="Build a monument<br>that <em>lives</em>.">Чулуугаар бус,<br><em>амьдралаар</em> дурсъя.</h1>
+    <p class="lead" data-mn="Хайртай хүнээ дурсах, өвөг дээдсээ хүндэтгэх, ирээдүйдээ ул мөр үлдээх амьд суварга. Бид мод тарьж, арчилж, таны дурсамжтай холбон хадгална." data-en="A living monument to remember someone you love, honor your ancestors, or leave a legacy for the future. We plant, care for, verify, and connect the tree to your story.">Хайртай хүнээ дурсах, өвөг дээдсээ хүндэтгэх, ирээдүйдээ ул мөр үлдээх амьд суварга. Бид мод тарьж, арчилж, таны дурсамжтай холбон хадгална.</p>
+    <div class="hero-actions">
+      <a class="button" href="#order" data-mn="Ногоон суваргаа бүтээх →" data-en="Build a Green Suvarga →">Ногоон суваргаа бүтээх →</a>
+      <a class="text-link" href="#meaning" data-mn="Яагаад Ногоон Суварга вэ?" data-en="Why Green Suvarga?">Яагаад Ногоон Суварга вэ?</a>
     </div>
-
-    <div class="card">
-      <h2>💚 Ил тод байдал</h2>
-      <p>Хандивын орлого, зарлагын мэдээллийг нээлттэй нийтэлнэ. Мод тарилтын явцыг тогтмол шинэчилнэ.</p>
+    <div class="trust-row">
+      <span>✓ 2 жилийн арчилгаа</span><span>✓ GPS баталгаажуулалт</span><span>✓ Дижитал дурсгал</span>
     </div>
+  </div>
+  <div class="hero-tree">
+    <div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div>
+    <div class="tree"><div class="trunk"></div><div class="crown crown-a"></div><div class="crown crown-b"></div><div class="crown crown-c"></div></div>
+    <div class="memorial-tag"><span>NS—0001</span><strong>Амьд дурсгал</strong></div>
+  </div>
+</section>
 
-    <div class="card">
-      <h2>💳 Хандив</h2>
-      <p>QPay холболт удахгүй. Одоогоор холбоо барих:</p>
-      <a class="button" href="mailto:info@nogoonsuvarga.com">Email бичих</a>
-    </div>
-  </section>
+<section class="statement" id="meaning">
+  <p class="eyebrow">NOGOON SUVARGA</p>
+  <h2 data-mn="Монголчуудын суварга бүтээх уламжлалыг<br>амьд ой болгон үргэлжлүүлье." data-en="Let a Mongolian tradition of remembrance<br>continue as a living forest.">Монголчуудын суварга бүтээх уламжлалыг<br>амьд ой болгон үргэлжлүүлье.</h2>
+  <p data-mn="Суварга бол дурсамж, буян, үргэлжлэл. Ногоон Суварга бол тэр утгыг байгальд үлдээх шинэ хэлбэр." data-en="A stupa represents remembrance, virtue, and continuity. A Green Suvarga carries that meaning forward through living nature.">Суварга бол дурсамж, буян, үргэлжлэл. Ногоон Суварга бол тэр утгыг байгальд үлдээх шинэ хэлбэр.</p>
+</section>
 
-  <footer>
-  <h4>Ногоон суварга гэрэлт ирээдүй ТББ</h4>
-   <p>📞 +976 8963 0150</p>
-  <a href="https://facebook.com/nogoonsuvarga.official">Facebook</a>
-  </p>
+<section class="cards">
+  <article><span class="icon">🕯</span><h3 data-mn="Дурсамж" data-en="In Memory">Дурсамж</h3><p data-mn="Өөд болсон хайртай хүнээ амьд модоор дурс." data-en="Remember someone who passed through a living tree.">Өөд болсон хайртай хүнээ амьд модоор дурс.</p></article>
+  <article><span class="icon">🌳</span><h3 data-mn="Удам" data-en="Family">Удам</h3><p data-mn="Гэр бүл, өвөг дээдэстээ зориулсан ногоон дурсгал бүтээ." data-en="Create a living legacy for your family and ancestors.">Гэр бүл, өвөг дээдэстээ зориулсан ногоон дурсгал бүтээ.</p></article>
+  <article><span class="icon">∞</span><h3 data-mn="Өв" data-en="Legacy">Өв</h3><p data-mn="Өөрийнхөө амьдралын утга, ирээдүйдээ үлдээх мөрөө бүтээ." data-en="Leave something living for the generations after you.">Өөрийнхөө амьдралын утга, ирээдүйдээ үлдээх мөрөө бүтээ.</p></article>
+</section>
+
+<section class="how" id="how">
+  <div><p class="eyebrow">HOW IT WORKS</p><h2 data-mn="Таны дурсамж мод болон ургана." data-en="Your memory becomes a growing tree.">Таны дурсамж мод болон ургана.</h2></div>
+  <div class="steps">
+    <div><b>01</b><h3 data-mn="Дурсах хүнээ сонгоно" data-en="Choose who to honor">Дурсах хүнээ сонгоно</h3><p data-mn="Нэр, зураг, төрсөн/нас барсан огноо, дурсгалын үгээ оруулна." data-en="Add their name, photo, dates, and your dedication.">Нэр, зураг, төрсөн/нас барсан огноо, дурсгалын үгээ оруулна.</p></div>
+    <div><b>02</b><h3 data-mn="Ногоон суваргаа захиална" data-en="Create your Green Suvarga">Ногоон суваргаа захиална</h3><p data-mn="Тарих талбай, модны багц, дурсгалын мэдээллээ баталгаажуулна." data-en="Confirm the planting project, tree package, and memorial details.">Тарих талбай, модны багц, дурсгалын мэдээллээ баталгаажуулна.</p></div>
+    <div><b>03</b><h3 data-mn="Бид тарьж, арчилна" data-en="We plant and care">Бид тарьж, арчилна</h3><p data-mn="Мэргэжлийн түнш тарьж, эхний 2 жил Ногоон Суваргын стандартаар арчилна." data-en="A certified forestry partner plants it; Nogoon Suvarga guarantees the first two years of care.">Мэргэжлийн түнш тарьж, эхний 2 жил Ногоон Суваргын стандартаар арчилна.</p></div>
+    <div><b>04</b><h3 data-mn="Мөнхөд холбогдоно" data-en="Keep the connection">Мөнхөд холбогдоно</h3><p data-mn="GPS, Tree ID, зураг, гэрчилгээ бүхий дижитал дурсгалын хуудсаа авна." data-en="Receive a memorial page with GPS, Tree ID, photos, and a certificate.">GPS, Tree ID, зураг, гэрчилгээ бүхий дижитал дурсгалын хуудсаа авна.</p></div>
+  </div>
+</section>
+
+<section class="order" id="order">
+  <div class="order-intro"><p class="eyebrow">START YOUR GREEN SUVARGA</p><h2 data-mn="Дурсамжийг эхлүүлээрэй." data-en="Start a living legacy.">Дурсамжийг эхлүүлээрэй.</h2><p data-mn="Эхний хувилбарын захиалга. Төлбөрийн систем холбогдсоны дараа захиалга шууд баталгаажна." data-en="V1 ordering flow. Once payment is connected, orders will be confirmed immediately.">Эхний хувилбарын захиалга. Төлбөрийн систем холбогдсоны дараа захиалга шууд баталгаажна.</p></div>
+  <form id="orderForm">
+    <label data-mn="Таны нэр" data-en="Your name">Таны нэр<input required name="customerName" placeholder="Нэр"></label>
+    <label data-mn="Дурсах хүний нэр" data-en="Person to honor">Дурсах хүний нэр<input required name="honoreeName" placeholder="Нэр"></label>
+    <label data-mn="Дурсгалын үг" data-en="Dedication"><textarea name="dedication" rows="3" placeholder="Таны дурсгалын үг..."></textarea></label>
+    <label data-mn="Нууцлал" data-en="Privacy">Нууцлал<select name="privacy"><option value="shareable">Хуваалцах боломжтой</option><option value="private">Хувийн</option><option value="public">Нийтийн</option></select></label>
+    <button class="button" type="submit" data-mn="Захиалгаа үргэлжлүүлэх →" data-en="Continue to checkout →">Захиалгаа үргэлжлүүлэх →</button>
+    <small>V1 demo: payment gateway connection is the next deployment step.</small>
+  </form>
+</section>
+
+<section class="impact" id="impact">
+  <div class="impact-head"><div><p class="eyebrow">VERIFIED IMPACT</p><h2 data-mn="Тарьсан мод бүр<br>түүхтэй." data-en="Every tree<br>has a story.">Тарьсан мод бүр<br>түүхтэй.</h2></div><p data-mn="Бид мод тарьсан гэдгээс илүү, яг хаана, хэзээ, хэрхэн арчилж байгааг харуулна." data-en="We show more than a promise to plant. We show where, when, and how each tree is cared for.">Бид мод тарьсан гэдгээс илүү, яг хаана, хэзээ, хэрхэн арчилж байгааг харуулна.</p></div>
+  <div class="stats"><div><strong>20,000</strong><span data-mn="модны төлөвлөсөн хүчин чадал" data-en="planned site capacity">модны төлөвлөсөн хүчин чадал</span></div><div><strong>2</strong><span data-mn="жилийн арчилгааны баталгаа" data-en="years of care">жилийн арчилгааны баталгаа</span></div><div><strong>1</strong><span data-mn="мод = 1 Tree ID" data-en="tree = 1 Tree ID">мод = 1 Tree ID</span></div></div>
+</section>
+
+<footer>
+  <div><strong>NOGOON SUVARGA</strong><p data-mn="Монголын өв • Амьд дурсгал" data-en="Mongolian heritage • Living memorials">Монголын өв • Амьд дурсгал</p></div>
+  <div><a href="#order" data-mn="Ногоон суварга бүтээх" data-en="Build a Green Suvarga">Ногоон суварга бүтээх</a><a href="#impact" data-mn="Нөлөө" data-en="Impact">Нөлөө</a></div>
+  <div><small>nogoonsuvarga.com</small><small>© 2026 Nogoon Suvarga</small></div>
 </footer>
+</main>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
 </body>
 </html>
