@@ -1,31 +1,28 @@
 <!doctype html>
 <html lang="mn-Cyrl">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ногоон Суварга — Account Test</title><style>body{font-family:Arial,sans-serif;background:#f6f8f3;color:#173126;margin:0;padding:40px}.wrap{max-width:720px;margin:auto}.card{background:#fff;border:1px solid #dce6dc;border-radius:18px;padding:28px;box-shadow:0 8px 24px #17312612}.field{margin:12px 0}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:5px}.field input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #ccd8ce;border-radius:10px}.btn{background:#14532d;color:#fff;border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;width:100%}.btn:disabled{opacity:.65;cursor:wait}.muted{color:#68786f}.error,.ok,.info{margin-top:12px;padding:12px;border-radius:10px}.error{background:#fdecec;color:#8d2c2c}.ok{background:#edf8ed;color:#24602d}.info{background:#eef5fb;color:#244b68}.hidden{display:none}.order{border:1px solid #dce6dc;border-radius:12px;padding:14px;margin-top:12px}.status{display:inline-block;background:#e9f5e9;color:#14532d;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}</style></head>
-<body><div class="wrap"><div class="card"><h1>Account test</h1><p class="muted">Түр зуурын нууц үгээр нэвтрэх тест. Энэ хуудсыг launch хийхийн өмнө устгана.</p><div class="field"><label>Имэйл</label><input id="email" type="email" autocomplete="username"></div><div class="field"><label>Нууц үг</label><input id="password" type="password" autocomplete="current-password"></div><button class="btn" id="login">Нэвтрэх</button><div id="msg" class="hidden"></div></div><div id="dash" class="card hidden" style="margin-top:18px"><h2 id="who"></h2><div id="orders"></div><button class="btn" id="logout" style="margin-top:16px">Гарах</button></div></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-const supabase=window.supabase.createClient('https://vrifdeskapwepbafeuvv.supabase.co','sb_publishable_7R4OeXDJIJ9kFGQ0s7Axvw_BItBPtSK');
-const $=id=>document.getElementById(id);function show(el){el.classList.remove('hidden')}function hide(el){el.classList.add('hidden')}function msg(text,type){show($('msg'));$('msg').className=type;$('msg').textContent=text}
-async function load(){
-  msg('Холболтыг шалгаж байна…','info');
-  const {data:{session},error:sessionError}=await supabase.auth.getSession();
-  if(sessionError){msg('Session error: '+sessionError.message,'error');return;}
-  if(!session){hide($('dash'));msg('Нэвтрэх мэдээллийг оруулаад Нэвтрэх дээр дарна уу.','info');return;}
-  show($('dash'));hide($('msg'));$('who').textContent='Нэвтэрсэн: '+(session.user.email||'Account');
-  const {data,error}=await supabase.from('orders').select('*').eq('user_id',session.user.id).order('created_at',{ascending:false});
-  if(error){$('orders').innerHTML='<div class="error">Захиалга унших алдаа: '+error.message+'</div>';return;}
-  $('orders').innerHTML=data.length?data.map(o=>`<div class="order"><strong>${o.order_number}</strong><br>${o.tree_type} · ${o.quantity} ширхэг<br>${Number(o.total_amount_mnt).toLocaleString('mn-MN')}₮<br><span class="status">${o.planting_status}</span> · <span class="status">${o.payment_confirmation_status||o.payment_status}</span></div>`).join(''):'<p class="muted">Амжилттай нэвтэрлээ. Одоогоор захиалга алга байна.</p>';
-}
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ногоон Суварга — Account Test</title><style>body{font-family:Arial,sans-serif;background:#f6f8f3;color:#173126;margin:0;padding:40px}.wrap{max-width:720px;margin:auto}.card{background:#fff;border:1px solid #dce6dc;border-radius:18px;padding:28px;box-shadow:0 8px 24px #17312612}.field{margin:12px 0}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:5px}.field input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #ccd8ce;border-radius:10px}.btn{background:#14532d;color:#fff;border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;width:100%}.btn:disabled{opacity:.55;cursor:wait}.muted{color:#68786f}.error,.ok,.info{margin-top:12px;padding:12px;border-radius:10px;white-space:pre-wrap}.error{background:#fdecec;color:#8d2c2c}.ok{background:#edf8ed;color:#24602d}.info{background:#eef4ff;color:#244a7b}.hidden{display:none}.order{border:1px solid #dce6dc;border-radius:12px;padding:14px;margin-top:12px}.status{display:inline-block;background:#e9f5e9;color:#14532d;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}</style></head>
+<body><div class="wrap"><div class="card"><h1>Account test</h1><p class="muted">Түр зуурын нууц үгээр нэвтрэх тест. Launch хийхийн өмнө энэ хуудсыг устгана.</p><div id="status" class="info">Бэлэн. Нэвтрэх товчийг дарна уу.</div><div class="field"><label>Имэйл</label><input id="email" type="email" autocomplete="email"></div><div class="field"><label>Нууц үг</label><input id="password" type="password" autocomplete="current-password"></div><button class="btn" id="login">Нэвтрэх</button><div id="msg" class="hidden"></div></div><div id="dash" class="card hidden" style="margin-top:18px"><h2 id="who"></h2><div id="orders"></div><button class="btn" id="logout" style="margin-top:16px">Гарах</button></div></div>
+<script>
+const BASE='https://vrifdeskapwepbafeuvv.supabase.co';
+const KEY='sb_publishable_7R4OeXDJIJ9kFGQ0s7Axvw_BItBPtSK';
+const $=id=>document.getElementById(id);
+function status(text,type='info'){const el=$('status');el.className=type;el.textContent=text}
+function msg(text,type){const el=$('msg');el.className=type;el.textContent=text}
+function show(el){el.classList.remove('hidden')}function hide(el){el.classList.add('hidden')}
+let accessToken=null;
+async function api(path,options={}){const headers={'apikey':KEY,'Content-Type':'application/json',...(options.headers||{})};if(accessToken)headers.Authorization='Bearer '+accessToken;const r=await fetch(BASE+path,{...options,headers});const text=await r.text();let data;try{data=JSON.parse(text)}catch{data=text}if(!r.ok)throw new Error((data&&data.msg)||(data&&data.message)||text||('HTTP '+r.status));return data}
 $('login').onclick=async()=>{
-  const email=$('email').value.trim(),password=$('password').value;
-  if(!email||!password){msg('Имэйл болон нууц үгээ оруулна уу.','error');return;}
-  $('login').disabled=true;$('login').textContent='Нэвтэрч байна…';msg('Supabase-д холбогдож байна…','info');
-  const {data,error}=await supabase.auth.signInWithPassword({email,password});
-  if(error){msg('Нэвтрэх алдаа: '+error.message,'error');$('login').disabled=false;$('login').textContent='Нэвтрэх';return;}
-  msg('Нэвтрэлт амжилттай. Акаунтыг нээж байна…','ok');
-  await load();
-  $('login').disabled=false;$('login').textContent='Нэвтрэх';
+ const email=$('email').value.trim(), password=$('password').value;
+ if(!email||!password){msg('Имэйл болон нууц үгээ оруулна уу.','error');return;}
+ $('login').disabled=true;status('Supabase-тэй холбогдож байна…','info');
+ try{
+   const auth=await api('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
+   accessToken=auth.access_token; status('Амжилттай нэвтэрлээ. Захиалгуудыг уншиж байна…','ok');
+   $('who').textContent=auth.user?.email||email; show($('dash')); hide($('msg'));
+   const rows=await api('/rest/v1/orders?select=*&user_id=eq.'+encodeURIComponent(auth.user.id)+'&order=created_at.desc');
+   $('orders').innerHTML=rows.length?rows.map(o=>`<div class="order"><strong>${o.order_number}</strong><br>${o.tree_type} · ${o.quantity} ширхэг<br>${Number(o.total_amount_mnt).toLocaleString('mn-MN')}₮<br><span class="status">${o.planting_status}</span> · <span class="status">${o.payment_confirmation_status||o.payment_status}</span></div>`).join(''):'<p class="muted">Одоогоор захиалга алга.</p>';
+   status('Бүх шалгалт амжилттай. Account → Supabase → orders ажиллаж байна.','ok');
+ }catch(e){status('Нэвтрэхэд алдаа гарлаа.','error');msg(e.message,'error');hide($('dash'));}finally{$('login').disabled=false;}
 };
-$('logout').onclick=async()=>{await supabase.auth.signOut();await load();};
-supabase.auth.onAuthStateChange((_event,session)=>{if(session)load();});
-load();
+$('logout').onclick=()=>{accessToken=null;hide($('dash'));status('Гарлаа. Дахин нэвтэрч туршиж болно.','info');};
 </script></body></html>
