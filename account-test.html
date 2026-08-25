@@ -5,24 +5,39 @@
 <script>
 const BASE='https://vrifdeskapwepbafeuvv.supabase.co';
 const KEY='sb_publishable_7R4OeXDJIJ9kFGQ0s7Axvw_BItBPtSK';
+const TOKEN_KEY='nogoon_suvarga_test_access_token';
+const USER_KEY='nogoon_suvarga_test_user';
 const $=id=>document.getElementById(id);
 function status(text,type='info'){const el=$('status');el.className=type;el.textContent=text}
 function msg(text,type){const el=$('msg');el.className=type;el.textContent=text}
 function show(el){el.classList.remove('hidden')}function hide(el){el.classList.add('hidden')}
-let accessToken=null;
+let accessToken=localStorage.getItem(TOKEN_KEY)||null;
+let user=JSON.parse(localStorage.getItem(USER_KEY)||'null');
 async function api(path,options={}){const headers={'apikey':KEY,'Content-Type':'application/json',...(options.headers||{})};if(accessToken)headers.Authorization='Bearer '+accessToken;const r=await fetch(BASE+path,{...options,headers});const text=await r.text();let data;try{data=JSON.parse(text)}catch{data=text}if(!r.ok)throw new Error((data&&data.msg)||(data&&data.message)||text||('HTTP '+r.status));return data}
+async function loadSession(){
+ if(!accessToken||!user){status('Бэлэн. Нэвтрэх товчийг дарна уу.','info');return;}
+ try{
+  $('who').textContent=user.email||'Account';show($('dash'));status('Нэвтэрсэн. Захиалгуудыг уншиж байна…','ok');
+  const rows=await api('/rest/v1/orders?select=*&user_id=eq.'+encodeURIComponent(user.id)+'&order=created_at.desc');
+  $('orders').innerHTML=rows.length?rows.map(o=>`<div class="order"><strong>${o.order_number}</strong><br>${o.tree_type} · ${o.quantity} ширхэг<br>${Number(o.total_amount_mnt).toLocaleString('mn-MN')}₮<br><span class="status">${o.planting_status}</span> · <span class="status">${o.payment_confirmation_status||o.payment_status}</span></div>`).join(''):'<p class="muted">Одоогоор захиалга алга.</p>';
+  status('Бүх шалгалт амжилттай. Account → Supabase → orders ажиллаж байна.','ok');
+ }catch(e){localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);accessToken=null;user=null;hide($('dash'));status('Нэвтрэх сесс дууссан байна.','error');msg(e.message,'error');}
+}
 $('login').onclick=async()=>{
  const email=$('email').value.trim(), password=$('password').value;
  if(!email||!password){msg('Имэйл болон нууц үгээ оруулна уу.','error');return;}
  $('login').disabled=true;status('Supabase-тэй холбогдож байна…','info');
  try{
    const auth=await api('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
-   accessToken=auth.access_token; status('Амжилттай нэвтэрлээ. Захиалгуудыг уншиж байна…','ok');
+   accessToken=auth.access_token; user=auth.user;
+   localStorage.setItem(TOKEN_KEY,accessToken);localStorage.setItem(USER_KEY,JSON.stringify(user));
+   status('Амжилттай нэвтэрлээ. Захиалгуудыг уншиж байна…','ok');
    $('who').textContent=auth.user?.email||email; show($('dash')); hide($('msg'));
    const rows=await api('/rest/v1/orders?select=*&user_id=eq.'+encodeURIComponent(auth.user.id)+'&order=created_at.desc');
    $('orders').innerHTML=rows.length?rows.map(o=>`<div class="order"><strong>${o.order_number}</strong><br>${o.tree_type} · ${o.quantity} ширхэг<br>${Number(o.total_amount_mnt).toLocaleString('mn-MN')}₮<br><span class="status">${o.planting_status}</span> · <span class="status">${o.payment_confirmation_status||o.payment_status}</span></div>`).join(''):'<p class="muted">Одоогоор захиалга алга.</p>';
    status('Бүх шалгалт амжилттай. Account → Supabase → orders ажиллаж байна.','ok');
  }catch(e){status('Нэвтрэхэд алдаа гарлаа.','error');msg(e.message,'error');hide($('dash'));}finally{$('login').disabled=false;}
 };
-$('logout').onclick=()=>{accessToken=null;hide($('dash'));status('Гарлаа. Дахин нэвтэрч туршиж болно.','info');};
+$('logout').onclick=()=>{accessToken=null;user=null;localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(USER_KEY);hide($('dash'));status('Гарлаа. Дахин нэвтэрч туршиж болно.','info');};
+loadSession();
 </script></body></html>
