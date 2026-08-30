@@ -1,0 +1,45 @@
+<!doctype html><html lang="mn-Cyrl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Нийлүүлэгчээр бүртгүүлэх — Ногоон Суварга</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap"><style>:root{--g:#14532d;--bg:#f6f8f3;--ink:#173126;--muted:#68786f;--line:#dce6dc;--soft:#edf5e9;--err:#fdecec}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'Noto Sans',Arial,sans-serif}.wrap{max-width:560px;margin:auto;padding:20px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;margin-top:16px}.btn{background:var(--g);color:#fff;border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;width:100%;font-size:15px}.btn:disabled{opacity:.6;cursor:not-allowed}.field{margin-top:12px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:4px}.field input{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fbfcfa;font:inherit}.ok,.err,.info{padding:12px;border-radius:10px;margin-top:14px}.ok{background:var(--soft);color:#24602d}.err{background:var(--err);color:#8d2c2c}.info{background:#eef5ff;color:#244a72}.muted{color:var(--muted);font-size:13px}a{color:var(--g)}h1{font-size:22px;margin:0 0 6px}.hidden{display:none}</style></head><body><main class="wrap">
+<h1>Нийлүүлэгчээр бүртгүүлэх</h1>
+<p class="muted">Мод тарих байгууллага, багийн хувьд бүртгэл үүсгэнэ. Бүртгэл үүссэний дараа админ баталгаажуулсны дараа л нэвтэрч, талбай болон бүтээгдэхүүнээ удирдах боломжтой болно.</p>
+<section id="form" class="card">
+<div class="field"><label>Байгууллага / багийн нэр *</label><input id="teamName" autocomplete="organization"></div>
+<div class="field"><label>Хариуцах хүний нэр *</label><input id="contactName" autocomplete="name"></div>
+<div class="field"><label>Имэйл *</label><input id="email" type="email" autocomplete="username"></div>
+<div class="field"><label>Утасны дугаар</label><input id="phone" type="tel" autocomplete="tel"></div>
+<div class="field"><label>Нууц үг * (дор хаяж 6 тэмдэгт)</label><input id="password" type="password" autocomplete="new-password"></div>
+<div class="field"><label>Нууц үг давтах *</label><input id="password2" type="password" autocomplete="new-password"></div>
+<button id="submitBtn" class="btn" style="margin-top:16px">Бүртгүүлэх</button>
+<div id="msg"></div>
+</section>
+<p class="muted" style="text-align:center">Бүртгэлтэй хэрэглэгч үү? <a href="planter-dashboard.html">Нийлүүлэгчийн самбар руу нэвтрэх</a></p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=window.supabase.createClient('https://vrifdeskapwepbafeuvv.supabase.co','sb_publishable_7R4OeXDJIJ9kFGQ0s7Axvw_BItBPtSK');
+const $=id=>document.getElementById(id);
+function setMsg(t,c){$('msg').className=c||'';$('msg').textContent=t}
+async function submit(){
+ const teamName=$('teamName').value.trim(), contactName=$('contactName').value.trim(), email=$('email').value.trim().toLowerCase(), phone=$('phone').value.trim(), password=$('password').value, password2=$('password2').value;
+ if(!teamName||!contactName||!email||!password){setMsg('Од (*) тэмдэгтэй талбаруудыг бөглөнө үү.','err');return}
+ if(password.length<6){setMsg('Нууц үг дор хаяж 6 тэмдэгт байх ёстой.','err');return}
+ if(password!==password2){setMsg('Нууц үг таарахгүй байна.','err');return}
+ const btn=$('submitBtn');btn.disabled=true;setMsg('Түр хүлээнэ үү…','info');
+ try{
+  const su=await sb.auth.signUp({email,password});
+  if(su.error){
+   if(/registered|already/i.test(su.error.message||'')){setMsg('Энэ имэйл хаягаар бүртгэл байна. Нэвтэрч орно уу.','err')}
+   else{setMsg(su.error.message,'err')}
+   btn.disabled=false;return
+  }
+  if(!su.data.session){
+   const si=await sb.auth.signInWithPassword({email,password});
+   if(si.error){setMsg('Бүртгэл үүслээ, гэхдээ нэвтрэхэд алдаа гарлаа: '+si.error.message,'err');btn.disabled=false;return}
+  }
+  const rpc=await sb.rpc('self_signup_supplier',{p_team_name:teamName,p_contact_name:contactName,p_email:email,p_phone:phone});
+  if(rpc.error){setMsg(rpc.error.message,'err');btn.disabled=false;return}
+  $('form').innerHTML='<div class="ok">Таны хүсэлтийг хүлээн авлаа. Админ баталгаажуулсны дараа "Нийлүүлэгчийн самбар"-т нэвтэрч, талбай болон бүтээгдэхүүнээ удирдах боломжтой болно.</div>';
+ }catch(e){setMsg(e.message||'Алдаа гарлаа.','err');btn.disabled=false}
+}
+$('submitBtn').onclick=submit;
+</script>
+</body></html>
