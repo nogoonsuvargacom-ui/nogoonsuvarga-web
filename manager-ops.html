@@ -38,7 +38,7 @@ async function load(){
   sb.from('team_members').select('id,team_id,user_id,full_name,email,active').eq('active',true).order('full_name'),
   sb.from('planting_sites').select('id,name,location_name,description,published').order('name'),
   sb.from('order_assignments').select('id,order_id,team_id,responsible_user_id,status,assigned_at'),
-  sb.from('team_members').select('id,team_id,full_name,email,phone,created_at,planting_teams(name,email,phone)').eq('active',false).order('created_at',{ascending:false})
+  sb.from('team_members').select('id,team_id,full_name,email,created_at,planting_teams(name,email,phone)').eq('active',false).order('created_at',{ascending:false})
  ]);
  if(ordersR.error){$('list').innerHTML='<div class="err">'+ordersR.error.message+'</div>';return}
  teams=teamsR.data||[];members=membersR.data||[];sites=sitesR.data||[];assignments=assignR.data||[];pendingSuppliers=pendingR.data||[];
@@ -60,7 +60,7 @@ async function load(){
  document.querySelectorAll('[data-approve-supplier]').forEach(b=>b.onclick=()=>approveSupplier(b.dataset.approveSupplier));
  document.querySelectorAll('[data-reject-supplier]').forEach(b=>b.onclick=()=>rejectSupplier(b.dataset.rejectSupplier));
 }
-function renderPendingSupplier(m){const team=m.planting_teams||{};return `<div class="row"><div class="grid"><div><strong>${team.name||'—'}</strong><div>${m.full_name} · ${m.email}${m.phone?' · '+m.phone:''}</div><div class="muted">Хүсэлт илгээсэн: ${new Date(m.created_at).toLocaleString('mn-MN')}</div></div><div><div class="actions"><button class="btn" data-approve-supplier="${m.id}">Зөвшөөрөх</button><button class="btn reject" data-reject-supplier="${m.id}">Татгалзах</button></div><div id="sm${m.id}"></div></div></div></div>`}
+function renderPendingSupplier(m){const team=m.planting_teams||{};return `<div class="row"><div class="grid"><div><strong>${team.name||'—'}</strong><div>${m.full_name} · ${m.email}${team.phone?' · '+team.phone:''}</div><div class="muted">Хүсэлт илгээсэн: ${new Date(m.created_at).toLocaleString('mn-MN')}</div></div><div><div class="actions"><button class="btn" data-approve-supplier="${m.id}">Зөвшөөрөх</button><button class="btn reject" data-reject-supplier="${m.id}">Татгалзах</button></div><div id="sm${m.id}"></div></div></div></div>`}
 async function approveSupplier(id){const r=await sb.from('team_members').update({active:true}).eq('id',id);if(r.error){const box=$('sm'+id);if(box){box.className='err';box.textContent=r.error.message}return}await load()}
 async function rejectSupplier(id){if(!confirm('Энэ нийлүүлэгчийн хүсэлтийг устгах уу?'))return;const r=await sb.from('team_members').delete().eq('id',id);if(r.error){const box=$('sm'+id);if(box){box.className='err';box.textContent=r.error.message}return}await load()}
 function renderPending(o){return `<div class="row"><div class="grid"><div><strong>${o.order_number}</strong><div>${o.tree_type} · ${o.quantity} ширхэг · ${money(o.total_amount_mnt)}</div><div class="muted">${o.location||'Байршилгүй'} · ${new Date(o.created_at).toLocaleString('mn-MN')}</div><div style="margin-top:8px"><span class="status">Төлбөр хүлээгдэж байна</span></div></div><div><div class="notice">Төлбөрийн баримтыг шалгаад шийдвэр гаргана.</div><div class="actions"><button class="btn" data-confirm="${o.id}">Төлбөр баталгаажуулах</button><button class="btn reject" data-reject="${o.id}">Татгалзах</button></div></div></div></div>`}
