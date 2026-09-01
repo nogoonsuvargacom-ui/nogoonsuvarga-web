@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /account.html
+Disallow: /admin-payments.html
+Disallow: /manager-ops.html
+Disallow: /planter-dashboard.html
+
+Sitemap: https://nogoonsuvarga.com/sitemap.xml
